@@ -3,10 +3,10 @@ package com.example.firebasepam14.repository
 import com.example.firebasepam14.model.Mahasiswa
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 
 class NetworkMahasiswaRepository (
     private val firestore: FirebaseFirestore
@@ -30,18 +30,48 @@ class NetworkMahasiswaRepository (
     }
 
     override suspend fun insertMahasiswa(mahasiswa: Mahasiswa) {
-        TODO("Not yet implemented")
+        try{
+            firestore.collection("Mahasiswa").add(mahasiswa).await()
+        } catch (e: Exception){
+            throw Exception("Gagal menambahkan data mahasiswa : ${e.message}")
+        }
+
     }
 
-    override suspend fun updateMahasiswa(nim: String, mahasiswa: Mahasiswa) {
-        TODO("Not yet implemented")
+    override suspend fun updateMahasiswa(mahasiswa: Mahasiswa) {
+        try {
+            firestore.collection("Mahasiswa")
+                .document(mahasiswa.nim)
+                .set(mahasiswa)
+                .await()
+        } catch (e :Exception) {
+            throw Exception("Gagal mengupdate data mahasiswa : ${e.message}")
+        }
     }
 
-    override suspend fun deleteMahasiswa(nim: String) {
-        TODO("Not yet implemented")
+    override suspend fun deleteMahasiswa(mahasiswa: Mahasiswa) {
+        try {
+            firestore.collection("Mahasiswa")
+                .document(mahasiswa.nim)
+                .delete()
+                .await()
+        } catch (e :Exception) {
+            throw Exception("Gagal menghapus data mahasiswa : ${e.message}")
+        }
     }
 
-    override suspend fun getMahasiswaByNim(nim: String): Flow<Mahasiswa> {
-        TODO("Not yet implemented")
+
+    override suspend fun getMahasiswaByNim(nim: String): Flow<Mahasiswa> = callbackFlow{
+        val mhsDocument = firestore.collection("Mahasiswa")
+            .document(nim)
+            .addSnapshotListener{ value, error ->
+                if (value != null) {
+                    val mhs = value.toObject(Mahasiswa::class.java)!!
+                    trySend(mhs)
+                }
+            }
+        awaitClose {
+            mhsDocument.remove()
+        }
     }
 }
