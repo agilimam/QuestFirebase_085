@@ -35,7 +35,6 @@ class HomeViewModel(private val mhs: MahasiswaRepository): ViewModel() {
                         HomeUiState.Success(it)
                     }
                 }
-
         }
     }
     fun deleteMhs(mahasiswa: Mahasiswa) {

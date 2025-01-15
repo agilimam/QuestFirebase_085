@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -121,34 +123,37 @@ fun InsertBodyMhs(
     onClick: () -> Unit,
     homeUiState: FormState
 ) {
-    Column (
+    LazyColumn (
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){  FormMahasiswa(
-        mahasiswaEvent = uiState.insertUiEvent,
-        onValueChange = onValueChange,
-        errorState = uiState.isEntryValid,
-        modifier = Modifier.fillMaxWidth()
-    )
-        Button(
-            onClick = onClick,
-            modifier = modifier.fillMaxWidth(),
-            enabled = homeUiState !is FormState.Loading,
-        ) {
-            if (homeUiState is FormState.Loading) {
-                CircularProgressIndicator(
-                    color = Color.White,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .padding(end = 8.dp)
-                )
-                Text("loading")
-            } else {
-                Text("Add")
+    ){ item {
+        FormMahasiswa(
+            mahasiswaEvent = uiState.insertUiEvent,
+            onValueChange = onValueChange,
+            errorState = uiState.isEntryValid,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+        item {
+            Button(
+                onClick = onClick,
+                modifier = modifier.fillMaxWidth(),
+                enabled = homeUiState !is FormState.Loading,
+            ) {
+                if (homeUiState is FormState.Loading) {
+                    CircularProgressIndicator(
+                        color = Color.White,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .padding(end = 8.dp)
+                    )
+                    Text("loading")
+                } else {
+                    Text("Add")
+                }
             }
         }
-
     }
 }
 @Composable
@@ -273,6 +278,34 @@ fun FormMahasiswa(
         )
         Text(
             text = errorState.angkatan ?: "",
+            color = Color.Red
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.judulSkripsi,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(judulSkripsi = it))
+            },
+            label = { Text("JudulSkripsi") },
+            isError = errorState.judulSkripsi != null,
+            placeholder = { Text("Masukkan Judul Skripsi") },
+        )
+        Text(
+            text = errorState.judulSkripsi ?: "",
+            color = Color.Red
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.dosenPembimbing,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(dosenPembimbing = it))
+            },
+            label = { Text("DosenPembimbing") },
+            isError = errorState.dosenPembimbing != null,
+            placeholder = { Text("Masukkan DosenPembimbing") },
+        )
+        Text(
+            text = errorState.dosenPembimbing ?: "",
             color = Color.Red
         )
     }

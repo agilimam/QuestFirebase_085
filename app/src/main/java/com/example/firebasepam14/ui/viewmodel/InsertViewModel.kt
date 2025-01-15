@@ -33,7 +33,9 @@ class InsertViewModel (
             jenisKelamin = if ( event.jenisKelamin.isNotEmpty()) null else "Jenis kelamin tidak boleh kosong",
             alamat = if (event.alamat.isNotEmpty()) null else "Alamat tidak boleh kosong",
             kelas = if (event.kelas.isNotEmpty()) null else "Kelas tidak boleh kosong",
-            angkatan = if (event.angkatan.isNotEmpty()) null else "Angkatan tidak boleh kosong"
+            angkatan = if (event.angkatan.isNotEmpty()) null else "Angkatan tidak boleh kosong",
+            judulSkripsi = if (event.judulSkripsi.isNotEmpty()) null else "Judul skripsi tidak boleh kosong",
+            dosenPembimbing = if (event.dosenPembimbing.isNotEmpty()) null else "DosenPembimbing tidak boleh kosong",
         )
         uiEvent = uiEvent.copy(isEntryValid = errorState)
         return errorState.isValid()
@@ -83,10 +85,13 @@ data class FormErrorState(
     val alamat: String? = null,
     val kelas: String? = null,
     val angkatan: String? =null,
+    val judulSkripsi: String? = null,
+    val dosenPembimbing: String? = null,
 ) {
     fun isValid(): Boolean{
         return nim == null && nama == null && jenisKelamin == null &&
-                alamat == null && kelas == null && angkatan == null
+                alamat == null && kelas == null && angkatan == null &&
+                judulSkripsi == null && dosenPembimbing == null
     }
 }
 //data class variabel yang menyimpan data input from
@@ -97,6 +102,8 @@ data class MahasiswaEvent(
     val alamat: String = "",
     val kelas: String = "",
     val angkatan: String = "",
+    val judulSkripsi: String = "",
+    val dosenPembimbing : String = "",
 )
 //menyimpan input form ke dalam entity
 fun MahasiswaEvent.toMhsModel() : Mahasiswa = Mahasiswa(
@@ -105,5 +112,7 @@ fun MahasiswaEvent.toMhsModel() : Mahasiswa = Mahasiswa(
     jenisKelamin = jenisKelamin,
     alamat = alamat,
     kelas = kelas,
-    angkatan = angkatan
+    angkatan = angkatan,
+    judulSkripsi = judulSkripsi,
+    dosenPembimbing = dosenPembimbing,
 )
