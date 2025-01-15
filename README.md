@@ -7,5 +7,6 @@
 
 detal mahasiswa ![Screenshot 2025-01-15 141049](https://github.com/user-attachments/assets/0346d6d3-4f09-4a99-ae20-f3dd0c1f0957)
 
-home setalah penambahan tambah data ![Screenshot 2025-01-15 141037](https://github.com/user-attachments/assets/7f1f3d2f-e0ee-4724-8068-1938ba80ef28)
+tambah data ![image](https://github.com/user-attachments/assets/9207e1c5-40a6-4fe8-b185-9ac216ada61c)
 
+home ![image](https://github.com/user-attachments/assets/5c260d1a-2802-4688-b44f-817fc7b534c4)
